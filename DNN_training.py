@@ -409,20 +409,6 @@ print('Input layer 0: ', Input[0, :10])
 
 # %%
 total_predict = model.predict(Input)
-total_predict_actual = output
-
-total_predict = Output_transformer.inverse_transform(total_predict)
-total_predict_actual = Output_transformer.inverse_transform(
-    total_predict_actual)
-
-total_RMSE = numpy_rmse(total_predict_actual[0:25], total_predict)
-print('\n\n\n')
-print('Total: ')
-print('Total RMSE:\t', total_RMSE)
-
-
-# %%
-total_predict = model.predict(Input)
 
 
 # %%
