@@ -150,7 +150,9 @@ output_test = tf.convert_to_tensor(output_test)
 model = Sequential()
 
 model.add(Dense(128, activation='relu', input_dim=Input_shape))
+#model.add(Dense(16, activation='relu'))
 model.add(Dense(4, activation='relu'))
+#model.add(Dense(2, activation='relu'))
 model.add(Dense(1))
 
 model.summary()
@@ -317,11 +319,19 @@ total_predict = Output_transformer.inverse_transform(total_predict)
 print('Total predict:\t', total_predict.T)
 
 # %%
-filename = '111052_projectB_ans.csv'
-df3 = pd.read_csv(filename)
-df3.loc[:, 'MaxWear'] = total_predict
-df3.to_csv(filename, index=False)
-print('Saved to ', filename)
+save_name = '111052_projectB_ans.csv'  
+
+# load_name = '111052_projectB_ans.csv'
+# df3 = pd.read_csv(load_name)
+# df3.loc[:, 'MaxWear'] = total_predict
+# df3.to_csv(save_name, index=False)
+# print('Saved to ', save_name)
+
+df3 = pd.DataFrame()
+index = np.arange(1, 26)
+df3['Index'] = pd.Series(index)
+df3['MaxWear'] = total_predict
+df3.to_csv(save_name, index=False)
 
 
 
