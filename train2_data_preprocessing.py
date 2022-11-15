@@ -2,27 +2,21 @@
 import pandas as pd
 import numpy as np
 from numpy import insert
-import matplotlib.pyplot as plt
-import seaborn as sns
 import time
 import copy
 import os
 
 # %%
 # Read file and seperate each feature to do data preprocessing
-
+folder_path = 'train2/'
+layer = 24
 print('Reading sg...')
-sg1 = [pd.read_csv('train1/' + str(i) + '_sg.csv') for i in range(1, 47)]
-sg2 = [pd.read_csv('train2/' + str(i) + '_sg.csv') for i in range(1, 25)]
-sg = sg1 + sg2
+sg = [pd.read_csv(folder_path + str(i) + '_sg.csv') for i in range(1, layer+1)]
 print('Reading spike...')
-spike1 = [pd.read_csv('train1/' + str(i) + '_spike.csv') for i in range(1, 47)]
-spike2 = [pd.read_csv('train2/' + str(i) + '_spike.csv') for i in range(1, 25)]
-spike = spike1 + spike2
+spike = [pd.read_csv(folder_path + str(i) + '_spike.csv')
+         for i in range(1, layer+1)]
 print('Reading MaxWear...')
-output1 = pd.read_csv('train1/00_Wear_data.csv').loc[:, 'MaxWear']
-output2 = pd.read_csv('train2/00_Wear_data.csv').loc[:, 'MaxWear']
-output = pd.concat([output1, output2], axis=0)
+output = pd.read_csv(folder_path + '00_Wear_data.csv').loc[:, 'MaxWear']
 
 print('\n\n')
 print('Seperate each feature to do data preprocessing')
@@ -101,37 +95,37 @@ print('cost time: ', time.time() - s)
 print('\n\n')
 print('-*-*-*' * 18 + '-')
 
-print('sg_A|\t\t1:', sg_A[0].size, '\t26:', sg_A[25].size,
-      '\t27:', sg_A[26].size, '\t46:', sg_A[45].size)
+print('sg_A|\t\t1:', sg_A[0].size, '\t23:', sg_A[22].size,
+      '\t24:', sg_A[23].size)
 print('--------'*10)
-print('sg_B|\t\t1:', sg_B[0].size, '\t26:', sg_B[25].size,
-      '\t27:', sg_B[26].size, '\t46:', sg_B[45].size)
-print('sg_C|\t\t1:', sg_C[0].size, '\t26:', sg_C[25].size,
-      '\t27:', sg_C[26].size, '\t46:', sg_C[45].size)
-print('sg_D|\t\t1:', sg_D[0].size, '\t26:', sg_D[25].size,
-      '\t27:', sg_D[26].size, '\t46:', sg_D[45].size)
-print('sg_E|\t\t1:', sg_E[0].size, '\t26:', sg_E[25].size,
-      '\t27:', sg_E[26].size, '\t46:', sg_E[45].size)
-print('sg_F|\t\t1:', sg_F[0].size, '\t26:', sg_F[25].size,
-      '\t27:', sg_F[26].size, '\t46:', sg_F[45].size)
-print('sg_G|\t\t1:', sg_G[0].size, '\t26:', sg_G[25].size,
-      '\t27:', sg_G[26].size, '\t46:', sg_G[45].size)
-print('sg_H|\t\t1:', sg_H[0].size, '\t26:', sg_H[25].size,
-      '\t27:', sg_H[26].size, '\t46:', sg_H[45].size)
-print('sg_I|\t\t1:', sg_I[0].size, '\t26:', sg_I[25].size,
-      '\t27:', sg_I[26].size, '\t46:', sg_I[45].size)
+print('sg_B|\t\t1:', sg_B[0].size, '\t23:', sg_B[22].size,
+      '\t24:', sg_B[23].size)
+print('sg_C|\t\t1:', sg_C[0].size, '\t23:', sg_C[22].size,
+      '\t24:', sg_C[23].size)
+print('sg_D|\t\t1:', sg_D[0].size, '\t23:', sg_D[22].size,
+      '\t24:', sg_D[23].size)
+print('sg_E|\t\t1:', sg_E[0].size, '\t23:', sg_E[22].size,
+      '\t24:', sg_E[23].size)
+print('sg_F|\t\t1:', sg_F[0].size, '\t23:', sg_F[22].size,
+      '\t24:', sg_F[23].size)
+print('sg_G|\t\t1:', sg_G[0].size, '\t23:', sg_G[22].size,
+      '\t24:', sg_G[23].size)
+print('sg_H|\t\t1:', sg_H[0].size, '\t23:', sg_H[22].size,
+      '\t24:', sg_H[23].size)
+print('sg_I|\t\t1:', sg_I[0].size, '\t23:', sg_I[22].size,
+      '\t24:', sg_I[23].size)
 
 
 print('\n')
-print('spike_A|\t1:', spike_A[0].size, '\t26:', spike_A[25].size,
-      '\t27:', spike_A[26].size, '\t46:', spike_A[45].size)
+print('spike_A|\t1:', spike_A[0].size, '\t23:', spike_A[22].size,
+      '\t24:', spike_A[23].size)
 print('--------'*10)
-print('spike_B|\t1:', spike_B[0].size, '\t26:', spike_B[25].size,
-      '\t27:', spike_B[26].size, '\t46:', spike_B[45].size)
-print('spike_C|\t1:', spike_C[0].size, '\t26:', spike_C[25].size,
-      '\t27:', spike_C[26].size, '\t46:', spike_C[45].size)
-print('spike_D|\t1:', spike_D[0].size, '\t26:', spike_D[25].size,
-      '\t27:', spike_D[26].size, '\t46:', spike_D[45].size)
+print('spike_B|\t1:', spike_B[0].size, '\t23:', spike_B[22].size,
+      '\t24:', spike_B[23].size)
+print('spike_C|\t1:', spike_C[0].size, '\t23:', spike_C[22].size,
+      '\t24:', spike_C[23].size)
+print('spike_D|\t1:', spike_D[0].size, '\t23:', spike_D[22].size,
+      '\t24:', spike_D[23].size)
 
 
 # %%
@@ -250,37 +244,37 @@ print('cost time: ', time.time() - s)
 print('\n\n')
 print('-*-*-*' * 18 + '-')
 
-print('sg_A|\t\t1:', sg_A[0].size, '\t26:', sg_A[25].size,
-      '\t27:', sg_A[26].size, '\t46:', sg_A[45].size)
+print('sg_A|\t\t1:', sg_A[0].size, '\t23:', sg_A[22].size,
+      '\t24:', sg_A[23].size)
 print('--------'*10)
-print('sg_B|\t\t1:', sg_B[0].size, '\t26:', sg_B[25].size,
-      '\t27:', sg_B[26].size, '\t46:', sg_B[45].size)
-print('sg_C|\t\t1:', sg_C[0].size, '\t26:', sg_C[25].size,
-      '\t27:', sg_C[26].size, '\t46:', sg_C[45].size)
-print('sg_D|\t\t1:', sg_D[0].size, '\t26:', sg_D[25].size,
-      '\t27:', sg_D[26].size, '\t46:', sg_D[45].size)
-print('sg_E|\t\t1:', sg_E[0].size, '\t26:', sg_E[25].size,
-      '\t27:', sg_E[26].size, '\t46:', sg_E[45].size)
-print('sg_F|\t\t1:', sg_F[0].size, '\t26:', sg_F[25].size,
-      '\t27:', sg_F[26].size, '\t46:', sg_F[45].size)
-print('sg_G|\t\t1:', sg_G[0].size, '\t26:', sg_G[25].size,
-      '\t27:', sg_G[26].size, '\t46:', sg_G[45].size)
-print('sg_H|\t\t1:', sg_H[0].size, '\t26:', sg_H[25].size,
-      '\t27:', sg_H[26].size, '\t46:', sg_H[45].size)
-print('sg_I|\t\t1:', sg_I[0].size, '\t26:', sg_I[25].size,
-      '\t27:', sg_I[26].size, '\t46:', sg_I[45].size)
+print('sg_B|\t\t1:', sg_B[0].size, '\t23:', sg_B[22].size,
+      '\t24:', sg_B[23].size)
+print('sg_C|\t\t1:', sg_C[0].size, '\t23:', sg_C[22].size,
+      '\t24:', sg_C[23].size)
+print('sg_D|\t\t1:', sg_D[0].size, '\t23:', sg_D[22].size,
+      '\t24:', sg_D[23].size)
+print('sg_E|\t\t1:', sg_E[0].size, '\t23:', sg_E[22].size,
+      '\t24:', sg_E[23].size)
+print('sg_F|\t\t1:', sg_F[0].size, '\t23:', sg_F[22].size,
+      '\t24:', sg_F[23].size)
+print('sg_G|\t\t1:', sg_G[0].size, '\t23:', sg_G[22].size,
+      '\t24:', sg_G[23].size)
+print('sg_H|\t\t1:', sg_H[0].size, '\t23:', sg_H[22].size,
+      '\t24:', sg_H[23].size)
+print('sg_I|\t\t1:', sg_I[0].size, '\t23:', sg_I[22].size,
+      '\t24:', sg_I[23].size)
 
 
 print('\n')
-print('spike_A|\t1:', spike_A[0].size, '\t26:', spike_A[25].size,
-      '\t27:', spike_A[26].size, '\t46:', spike_A[45].size)
+print('spike_A|\t1:', spike_A[0].size, '\t23:', spike_A[22].size,
+      '\t24:', spike_A[23].size)
 print('--------'*10)
-print('spike_B|\t1:', spike_B[0].size, '\t26:', spike_B[25].size,
-      '\t27:', spike_B[26].size, '\t46:', spike_B[45].size)
-print('spike_C|\t1:', spike_C[0].size, '\t26:', spike_C[25].size,
-      '\t27:', spike_C[26].size, '\t46:', spike_C[45].size)
-print('spike_D|\t1:', spike_D[0].size, '\t26:', spike_D[25].size,
-      '\t27:', spike_D[26].size, '\t46:', spike_D[45].size)
+print('spike_B|\t1:', spike_B[0].size, '\t23:', spike_B[22].size,
+      '\t24:', spike_B[23].size)
+print('spike_C|\t1:', spike_C[0].size, '\t23:', spike_C[22].size,
+      '\t24:', spike_C[23].size)
+print('spike_D|\t1:', spike_D[0].size, '\t23:', spike_D[22].size,
+      '\t24:', spike_D[23].size)
 
 
 # %%
@@ -557,42 +551,42 @@ spike_D = final_D
 print('\n\n')
 print('-*-*-*' * 18 + '-')
 
-print('sg_A|\t\t1:', sg_A[0].size, '\t26:', sg_A[25].size,
-      '\t27:', sg_A[26].size, '\t46:', sg_A[45].size)
+print('sg_A|\t\t1:', sg_A[0].size, '\t23:', sg_A[22].size,
+      '\t24:', sg_A[23].size)
 print('--------'*10)
-print('sg_B|\t\t1:', sg_B[0].size, '\t26:', sg_B[25].size,
-      '\t27:', sg_B[26].size, '\t46:', sg_B[45].size)
-print('sg_C|\t\t1:', sg_C[0].size, '\t26:', sg_C[25].size,
-      '\t27:', sg_C[26].size, '\t46:', sg_C[45].size)
-print('sg_D|\t\t1:', sg_D[0].size, '\t26:', sg_D[25].size,
-      '\t27:', sg_D[26].size, '\t46:', sg_D[45].size)
-print('sg_E|\t\t1:', sg_E[0].size, '\t26:', sg_E[25].size,
-      '\t27:', sg_E[26].size, '\t46:', sg_E[45].size)
-print('sg_F|\t\t1:', sg_F[0].size, '\t26:', sg_F[25].size,
-      '\t27:', sg_F[26].size, '\t46:', sg_F[45].size)
-print('sg_G|\t\t1:', sg_G[0].size, '\t26:', sg_G[25].size,
-      '\t27:', sg_G[26].size, '\t46:', sg_G[45].size)
-print('sg_H|\t\t1:', sg_H[0].size, '\t26:', sg_H[25].size,
-      '\t27:', sg_H[26].size, '\t46:', sg_H[45].size)
-print('sg_I|\t\t1:', sg_I[0].size, '\t26:', sg_I[25].size,
-      '\t27:', sg_I[26].size, '\t46:', sg_I[45].size)
+print('sg_B|\t\t1:', sg_B[0].size, '\t23:', sg_B[22].size,
+      '\t24:', sg_B[23].size)
+print('sg_C|\t\t1:', sg_C[0].size, '\t23:', sg_C[22].size,
+      '\t24:', sg_C[23].size)
+print('sg_D|\t\t1:', sg_D[0].size, '\t23:', sg_D[22].size,
+      '\t24:', sg_D[23].size)
+print('sg_E|\t\t1:', sg_E[0].size, '\t23:', sg_E[22].size,
+      '\t24:', sg_E[23].size)
+print('sg_F|\t\t1:', sg_F[0].size, '\t23:', sg_F[22].size,
+      '\t24:', sg_F[23].size)
+print('sg_G|\t\t1:', sg_G[0].size, '\t23:', sg_G[22].size,
+      '\t24:', sg_G[23].size)
+print('sg_H|\t\t1:', sg_H[0].size, '\t23:', sg_H[22].size,
+      '\t24:', sg_H[23].size)
+print('sg_I|\t\t1:', sg_I[0].size, '\t23:', sg_I[22].size,
+      '\t24:', sg_I[23].size)
 
 """"""
 print()
-print('spike_A|\t1:', spike_A[0].size, '\t26:', spike_A[25].size,
-      '\t27:', spike_A[26].size, '\t46:', spike_A[45].size)
+print('spike_A|\t1:', spike_A[0].size, '\t23:', spike_A[22].size,
+      '\t24:', spike_A[23].size)
 print('--------'*10)
-print('spike_B|\t1:', spike_B[0].size, '\t26:', spike_B[25].size,
-      '\t27:', spike_B[26].size, '\t46:', spike_B[45].size)
-print('spike_C|\t1:', spike_C[0].size, '\t26:', spike_C[25].size,
-      '\t27:', spike_C[26].size, '\t46:', spike_C[45].size)
-print('spike_D|\t1:', spike_D[0].size, '\t26:', spike_D[25].size,
-      '\t27:', spike_D[26].size, '\t46:', spike_D[45].size)
-print('BCD Distance|\t1:', BCD_distance[0].size, '\t26:', BCD_distance[25].size,
-      '\t27:', BCD_distance[26].size, '\t46:', BCD_distance[45].size)
+print('spike_B|\t1:', spike_B[0].size, '\t23:', spike_B[22].size,
+      '\t24:', spike_B[23].size)
+print('spike_C|\t1:', spike_C[0].size, '\t23:', spike_C[22].size,
+      '\t24:', spike_C[23].size)
+print('spike_D|\t1:', spike_D[0].size, '\t23:', spike_D[22].size,
+      '\t24:', spike_D[23].size)
+print('BCD Distance|\t1:', BCD_distance[0].size, '\t23:', BCD_distance[22].size,
+      '\t24:', BCD_distance[23].size)
 """
-print('BDF Distance|\t1:', BDF_distance[0].size, '\t26:', BDF_distance[25].size, 
-      '\t27:', BDF_distance[26].size, '\t46:', BDF_distance[45].size)
+print('BDF Distance|\t1:', BDF_distance[0].size, '\t23:', BDF_distance[22].size, 
+      '\t24:', BDF_distance[23].size, '\t46:', BDF_distance[45].size)
 """
 
 
@@ -610,7 +604,7 @@ spike_C_lower_noise = spike_D * work_D
 
 
 # %%
-path = 'train_data/'
+path = 'train2_data/'
 os.makedirs(path, exist_ok=True)
 
 sg_B = np.array(sg_B)
@@ -640,7 +634,7 @@ BCD_distance = np.array(BCD_distance)
 BCD_abs_distance = np.array(BCD_abs_distance)
 BDF_distance = np.array(BDF_distance)
 
-print('Saving train data...')
+print('saving to ' + path + '...')
 
 np.save( path +'sg_B', sg_B)
 np.save( path +'sg_C', sg_C)
