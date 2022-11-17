@@ -113,9 +113,9 @@ spike_abs_C_lower_noise = np.concatenate((spike_abs_C_lower_noise1, spike_abs_C_
 BCD_distance = np.concatenate((BCD_distance1, BCD_distance2), axis=0)
 BCD_abs_distance = np.concatenate((BCD_abs_distance1, BCD_abs_distance2), axis=0)
 
-output1 = pd.read_csv('train1/00_Wear_data.csv').loc[:, 'MaxWear']
-output2 = pd.read_csv('train2/00_Wear_data.csv').loc[:, 'MaxWear']
-Output = pd.concat([output1, output2], axis=0).values
+Output1 = pd.read_csv('train1/00_Wear_data.csv').loc[:, 'MaxWear']
+Output2 = pd.read_csv('train2/00_Wear_data.csv').loc[:, 'MaxWear']
+Output = pd.concat([Output1, Output2], axis=0).values
 
 
 # In[ ]:
@@ -223,19 +223,19 @@ print(df2.columns)
 Model = df2.values
 Model = shuffle(Model, random_state=42)
 Input = Model[:, :-1]
-output = Model[:, -1]
-output = np.reshape(output, (-1, 1))
+Output = Model[:, -1]
+Output = np.reshape(Output, (-1, 1))
 
 Input_shape = Input.shape[1]
 
 print('Input layer 0: ', Input[0, :10])
-print('Output layer ~ 10: ', output[:10])
+print('Output layer ~ 10: ', Output[:10])
 
 Input_transformer = MaxAbsScaler()
 Output_transformer = StandardScaler()
 
 Input = Input_transformer.fit_transform(Input)
-Output = Output_transformer.fit_transform(output)
+Output = Output_transformer.fit_transform(Output)
 
 print('Input layer 0: ', Input[0, :10])
 
@@ -243,18 +243,18 @@ print('Input layer 0: ', Input[0, :10])
 # In[ ]:
 
 
-#input_train, input_test, output_train, output_test = train_test_split(
-#   Input, output, test_size=0.1, random_state=42)
-input_train, input_test, output_train, output_test = Input, Input, output, output
+#input_train, input_test, Output_train, Output_test = train_test_split(
+#   Input, Output, test_size=0.1, random_state=42)
+input_train, input_test, Output_train, Output_test = Input, Input, Output, Output
 print('input_train.shape:\t', input_train.shape)
 print('input_test.shape:\t', input_test.shape)
-print('output_train.shape:\t', output_train.shape)
-print('output_test.shape:\t', output_test.shape)
+print('Output_train.shape:\t', Output_train.shape)
+print('Output_test.shape:\t', Output_test.shape)
 
 input_train = tf.convert_to_tensor(input_train)
 input_test = tf.convert_to_tensor(input_test)
-output_train = tf.convert_to_tensor(output_train)
-output_test = tf.convert_to_tensor(output_test)
+Output_train = tf.convert_to_tensor(Output_train)
+Output_test = tf.convert_to_tensor(Output_test)
 
 
 # In[ ]:
@@ -288,8 +288,8 @@ model.compile(optimizer=tf.optimizers.Adam(
     learning_rate=learning_rate), loss=rmse)
 
 start = time.time()
-history = model.fit(input_train, output_train,
-                    validation_data=(input_test, output_test), 
+history = model.fit(input_train, Output_train,
+                    validation_data=(input_test, Output_test), 
                     batch_size=batch_size, 
                     epochs=epochs,
                     verbose=1)
@@ -311,7 +311,7 @@ def numpy_rmse(actual, predict):
 
 
 test_predict = model.predict(input_test)
-test_predict_actual = output_test.numpy()
+test_predict_actual = Output_test.numpy()
 
 test_predict = np.array(test_predict)
 
@@ -327,7 +327,7 @@ print('Test RMSE:\t', test_RMSE)
 
 
 train_predict = model.predict(input_train)
-train_predict_actual = output_train.numpy()
+train_predict_actual = Output_train.numpy()
 
 train_predict = Output_transformer.inverse_transform(train_predict)
 train_predict_actual = Output_transformer.inverse_transform(
@@ -343,7 +343,7 @@ print('Train RMSE:\t', train_RMSE)
 
 
 total_predict = model.predict(Input)
-total_predict_actual = output
+total_predict_actual = Output
 
 total_predict = Output_transformer.inverse_transform(total_predict)
 total_predict_actual = Output_transformer.inverse_transform(
@@ -471,7 +471,7 @@ print('Input layer 0: ', Input[0, :10])
 
 """
 total_predict = model.predict(Input)
-total_predict_actual = output
+total_predict_actual = Output
 
 total_predict = Output_transformer.inverse_transform(total_predict)
 total_predict_actual = Output_transformer.inverse_transform(
