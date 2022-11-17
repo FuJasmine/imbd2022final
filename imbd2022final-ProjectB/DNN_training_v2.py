@@ -604,6 +604,7 @@ print('Input layer 0: ', Input[0, :10])
 # In[ ]:
 
 
+"""
 total_predict = model.predict(Input)
 total_predict_actual = output
 
@@ -615,6 +616,7 @@ total_RMSE = numpy_rmse(total_predict_actual[0:25], total_predict)
 print('\n\n\n')
 print('Total: ')
 print('Total RMSE:\t', total_RMSE)
+"""
 
 
 # In[ ]:
