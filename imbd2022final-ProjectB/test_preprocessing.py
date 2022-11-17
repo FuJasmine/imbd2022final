@@ -1,37 +1,38 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[1]:
 
 
 import copy
 import os
 import time
+import collections
 
 import numpy as np
 import pandas as pd
 from numpy import insert
 
 
-# In[ ]:
+# In[2]:
 
 
 start_time = time.time()
 
 
-# In[ ]:
+# In[3]:
 
 
 # define the path of the data
 folder_path = 'test/'
-layers =  25
+layers = 25
 save_foler = 'test_data'
 
 sg_files = [folder_path+str(i)+'_sg.csv' for i in range(1, layers + 1)]
 spike_files = [folder_path+str(i)+'_spike.csv' for i in range(1, layers + 1)]
 
 
-# In[ ]:
+# In[4]:
 
 
 # read the data
@@ -64,7 +65,7 @@ for i in spike_feature_index:
     print('cost time: ', time.time() - s)
 
 
-# In[ ]:
+# In[5]:
 
 
 print('\n\n')
@@ -77,7 +78,7 @@ print('sg_dict_keys:' + str(sg.keys()))
 print('spike_dict_keys:' + str(spike.keys()))
 
 
-# In[ ]:
+# In[6]:
 
 
 # Show the size of our data
@@ -91,7 +92,7 @@ for i in spike_feature:
     print(i + '| \t', '1:', spike[i][0].size, '\t', int(layers/2)+3, ':',spike[i][int(layers/2)+2].size,  '\t', int(layers/2)+4, ':',spike[i][int(layers/2)+5].size, '\t', layers, ':', spike[i][layers-1].size)
 
 
-# In[ ]:
+# In[7]:
 
 
 # If the number of data in one column is smaller than maximum, we'll use the last value of that column
@@ -126,7 +127,7 @@ for i in spike_feature:
     print('cost time: ', time.time() - s)
 
 
-# In[ ]:
+# In[8]:
 
 
 # Show the size of our data
@@ -142,7 +143,7 @@ for i in spike_feature:
           '\t', int(layers/2)+4, ':', spike[i][int(layers/2)+5].size, '\t', layers, ':', spike[i][layers-1].size)
 
 
-# In[ ]:
+# In[9]:
 
 
 # Change in sg --> change the data from absolute coordination to relative coordination (distance in each timestep)
@@ -156,7 +157,7 @@ for i in sg_feature:
     print('cost time: ', time.time() - s)
 
 
-# In[ ]:
+# In[10]:
 
 
 # Calculate B's, C's, D's values at A = 0.001, 0.002, 0.003.....
@@ -176,7 +177,7 @@ for i in spike_feature:
     print('cost time: ', time.time() - s)
 
 
-# In[ ]:
+# In[11]:
 
 
 # Change in spike --> change the data from absolute coordination to relative coordination (distance in each timestep)
@@ -190,7 +191,7 @@ for i in spike_feature:
     print('cost time: ', time.time() - s)
 
 
-# In[ ]:
+# In[12]:
 
 
 # Sum up the distance that process during one timestep 0.001
@@ -218,7 +219,7 @@ for i in spike_feature:
     print('cost time: ', time.time() - s)
 
 
-# In[ ]:
+# In[13]:
 
 
 s = time.time()
@@ -243,7 +244,7 @@ BDF_distance = np.array([[pow(pow(sg['sg_B'][j][i], 2) + pow(sg['sg_D'][j][i], 2
 print('cost time: ', time.time() - s)
 
 
-# In[ ]:
+# In[14]:
 
 
 # names of variables change
@@ -251,7 +252,7 @@ for i in spike_feature:
     spike[i] = spike_final[i]
 
 
-# In[ ]:
+# In[15]:
 
 
 # Show the size of our data
@@ -267,22 +268,56 @@ for i in spike_feature:
           '\t', int(layers/2)+4, ':', spike[i][int(layers/2)+5].size, '\t', layers, ':', spike[i][layers-1].size)
 
 
-# In[ ]:
+# In[16]:
 
 
 # Creaet lower noise featrue
-work_B = [[1 if abs(sg['sg_B'][i][j]) >= 0.0029 and abs(sg['sg_B'][i][j]) <= 0.0041 else 0
+temp_list = list(abs(np.around(sg['sg_B'][0], decimals=4)))
+counter = collections.Counter(temp_list)
+upper = counter.most_common()[0][0]
+lower = counter.most_common()[1][0]
+print('B upper and lower', upper, lower)
+
+work_B = [[1 if abs(sg['sg_B'][i][j]) >= lower-0.0001 and abs(sg['sg_B'][i][j]) <= upper+0.0001 else 0
            for j in range(len(sg['sg_B'][i]))] for i in range(len(sg['sg_B']))]
-work_D = [[1 if abs(sg['sg_D'][i][j]) >= 0.0029 and abs(sg['sg_D'][i][j]) <= 0.0041 else 0
+
+temp_list = list(abs(np.around(sg['sg_D'][0], decimals=4)))
+counter = collections.Counter(temp_list)
+upper = counter.most_common()[0][0]
+lower = counter.most_common()[1][0]
+print('D upper and lower', upper, lower)
+
+work_D = [[1 if abs(sg['sg_D'][i][j]) >= lower-0.0001 and abs(sg['sg_D'][i][j]) <= upper+0.0001 else 0
            for j in range(len(sg['sg_D'][i]))] for i in range(len(sg['sg_D']))]
 
+temp_list = list(abs(np.around(sg['sg_F'][0], decimals=4)))
+counter = collections.Counter(temp_list)
+upper = counter.most_common()[0][0]
+lower = counter.most_common()[1][0]
+print('F upper and lower', upper, lower)
+
+work_F = [[1 if abs(sg['sg_F'][i][j]) >= lower-0.0001 and abs(sg['sg_F'][i][j]) <= upper+0.0001 else 0
+           for j in range(len(sg['sg_F'][i]))] for i in range(len(sg['sg_F']))]
+
+
+# In[17]:
+
+
 spike_abs_B_lower_noise = spike_abs['spike_B'] * work_B
-spike_B_lower_noise = spike_abs['spike_B'] * work_B
+spike_B_lower_noise = spike['spike_B'] * work_B
 spike_abs_C_lower_noise = spike_abs['spike_D'] * work_D
-spike_C_lower_noise = spike_abs['spike_D'] * work_D
+spike_C_lower_noise = spike['spike_D'] * work_D
 
 
-# In[ ]:
+# In[18]:
+
+
+sg_B_lower_noise = np.array(sg['sg_B']) * work_B
+sg_D_lower_noise = np.array(sg['sg_D']) * work_D
+sg_F_lower_noise = np.array(sg['sg_F']) * work_F
+
+
+# In[19]:
 
 
 #save data
@@ -312,8 +347,12 @@ np.save(os.path.join(save_foler, 'spike_B_lower_noise'), np.array(spike_B_lower_
 np.save(os.path.join(save_foler, 'spike_abs_C_lower_noise'), np.array(spike_abs_C_lower_noise))
 np.save(os.path.join(save_foler, 'spike_C_lower_noise'), np.array(spike_C_lower_noise))
 
+np.save(os.path.join(save_foler, 'sg_B_lower_noise'), np.array(sg_B_lower_noise))
+np.save(os.path.join(save_foler, 'sg_D_lower_noise'), np.array(sg_D_lower_noise))
+np.save(os.path.join(save_foler, 'sg_F_lower_noise'), np.array(sg_F_lower_noise))
 
-# In[ ]:
+
+# In[20]:
 
 
 print('saving done!')
