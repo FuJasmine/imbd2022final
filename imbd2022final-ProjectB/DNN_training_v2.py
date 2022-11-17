@@ -363,7 +363,7 @@ def rmse(y_true, y_pred):
 
 learning_rate = 0.0005
 batch_size = 15
-epochs = 500
+epochs = 1000
 
 
 # Adam RMSprop
