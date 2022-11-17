@@ -290,15 +290,6 @@ print('D upper and lower', upper, lower)
 work_D = [[1 if abs(sg['sg_D'][i][j]) >= lower-0.0001 and abs(sg['sg_D'][i][j]) <= upper+0.0001 else 0
            for j in range(len(sg['sg_D'][i]))] for i in range(len(sg['sg_D']))]
 
-temp_list = list(abs(np.around(sg['sg_F'][0], decimals=4)))
-counter = collections.Counter(temp_list)
-upper = counter.most_common()[0][0]
-lower = counter.most_common()[1][0]
-print('F upper and lower', upper, lower)
-
-work_F = [[1 if abs(sg['sg_F'][i][j]) >= lower-0.0001 and abs(sg['sg_F'][i][j]) <= upper+0.0001 else 0
-           for j in range(len(sg['sg_F'][i]))] for i in range(len(sg['sg_F']))]
-
 
 # In[ ]:
 
@@ -314,7 +305,6 @@ spike_C_lower_noise = spike['spike_D'] * work_D
 
 sg_B_lower_noise = np.array(sg['sg_B']) * work_B
 sg_D_lower_noise = np.array(sg['sg_D']) * work_D
-sg_F_lower_noise = np.array(sg['sg_F']) * work_F
 
 
 # In[ ]:
@@ -349,7 +339,6 @@ np.save(os.path.join(save_foler, 'spike_C_lower_noise'), np.array(spike_C_lower_
 
 np.save(os.path.join(save_foler, 'sg_B_lower_noise'), np.array(sg_B_lower_noise))
 np.save(os.path.join(save_foler, 'sg_D_lower_noise'), np.array(sg_D_lower_noise))
-np.save(os.path.join(save_foler, 'sg_F_lower_noise'), np.array(sg_F_lower_noise))
 
 
 # In[ ]:

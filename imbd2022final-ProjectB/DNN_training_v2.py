@@ -53,7 +53,6 @@ spike_abs_B_lower_noise1 = np.load(path1 + 'spike_abs_B_lower_noise.npy')
 spike_abs_C_lower_noise1 = np.load(path1 + 'spike_abs_C_lower_noise.npy')
 sg_B_lower_noise1 = np.load(path1 + 'sg_B_lower_noise.npy')
 sg_D_lower_noise1 = np.load(path1 + 'sg_D_lower_noise.npy')
-sg_F_lower_noise1 = np.load(path1 + 'sg_F_lower_noise.npy')
 
 BCD_distance1 = np.load(path1 + 'BCD_distance.npy')
 BCD_abs_distance1 = np.load(path1 + 'BCD_abs_distance.npy')
@@ -85,7 +84,6 @@ spike_abs_B_lower_noise2 = np.load(path2 + 'spike_abs_B_lower_noise.npy')
 spike_abs_C_lower_noise2 = np.load(path2 + 'spike_abs_C_lower_noise.npy')
 sg_B_lower_noise2 = np.load(path2 + 'sg_B_lower_noise.npy')
 sg_D_lower_noise2 = np.load(path2 + 'sg_D_lower_noise.npy')
-sg_F_lower_noise2 = np.load(path2 + 'sg_F_lower_noise.npy')
 
 BCD_distance2 = np.load(path2 + 'BCD_distance.npy')
 BCD_abs_distance2 = np.load(path2 + 'BCD_abs_distance.npy')
@@ -117,7 +115,6 @@ spike_abs_B_lower_noise = np.concatenate((spike_abs_B_lower_noise1, spike_abs_B_
 spike_abs_C_lower_noise = np.concatenate((spike_abs_C_lower_noise1, spike_abs_C_lower_noise2), axis=0)
 sg_B_lower_noise = np.concatenate((sg_B_lower_noise1, sg_B_lower_noise2), axis=0)
 sg_D_lower_noise = np.concatenate((sg_D_lower_noise1, sg_D_lower_noise2), axis=0)
-sg_F_lower_noise = np.concatenate((sg_F_lower_noise1, sg_F_lower_noise2), axis=0)
 
 BCD_distance = np.concatenate((BCD_distance1, BCD_distance2), axis=0)
 BCD_abs_distance = np.concatenate((BCD_abs_distance1, BCD_abs_distance2), axis=0)
@@ -158,8 +155,6 @@ spike_B_sg_B_sum = np.array([spike_B[i]-abs(sg_B_lower_noise[i])
                             for i in range(len(spike_B))]).sum(axis=1)
 spike_C_sg_D_sum = np.array([spike_C[i]-abs(sg_D_lower_noise[i])
                              for i in range(len(spike_C))]).sum(axis=1)
-spike_D_sg_F_sum = np.array([spike_D[i]-abs(sg_F_lower_noise[i])
-                             for i in range(len(spike_D))]).sum(axis=1)
 
 spike_B_sg_B_multi_sum = np.array([np.multiply(spike_B[i], sg_B[i]) for i in range(len(spike_B))]).sum(axis=1)
 spike_C_sg_D_multi_sum = np.array([np.multiply(spike_C[i], sg_D[i]) for i in range(len(spike_C))]).sum(axis=1)
@@ -225,13 +220,6 @@ integrated_spike_C_sg_D2 = [sum(abs(spike_C_sg_D_sum[train1_len+1:i]))
                             for i in range(train1_len+1, len(spike_C_sg_D_sum)+1)]
 integrated_spike_C_sg_D = integrated_spike_C_sg_D1 + integrated_spike_C_sg_D2
 df['integrated_spike_C_sg_D'] = pd.Series(integrated_spike_C_sg_D)
-
-integrated_spike_D_sg_F1 = [sum(abs(spike_D_sg_F_sum[:i]))
-                            for i in range(1, train1_len+1)]
-integrated_spike_D_sg_F2 = [sum(abs(spike_D_sg_F_sum[train1_len+1:i]))
-                            for i in range(train1_len+1, len(spike_D_sg_F_sum)+1)]
-integrated_spike_D_sg_F = integrated_spike_D_sg_F1 + integrated_spike_D_sg_F2
-df['integrated_spike_D_sg_F'] = pd.Series(integrated_spike_D_sg_F)
 
 integrated_sg_C_sum1 = [sum(abs(sg_C_sum[:i]))
                         for i in range(1, train1_len+1)]
@@ -462,7 +450,6 @@ spike_abs_B_lower_noise = np.load(path3 + 'spike_abs_B_lower_noise.npy')
 spike_abs_C_lower_noise = np.load(path3 + 'spike_abs_C_lower_noise.npy')
 sg_B_lower_noise = np.load(path3 + 'sg_B_lower_noise.npy')
 sg_D_lower_noise = np.load(path3 + 'sg_D_lower_noise.npy')
-sg_F_lower_noise = np.load(path3 + 'sg_F_lower_noise.npy')
 
 BCD_distance = np.load(path3 + 'BCD_distance.npy')
 BCD_abs_distance = np.load(path3 + 'BCD_abs_distance.npy')
@@ -491,8 +478,6 @@ spike_B_sg_B_sum = np.array([spike_B[i]-abs(sg_B_lower_noise[i])
                             for i in range(len(spike_B))]).sum(axis=1)
 spike_C_sg_D_sum = np.array([spike_C[i]-abs(sg_D_lower_noise[i])
                              for i in range(len(spike_C))]).sum(axis=1)
-spike_D_sg_F_sum = np.array([spike_D[i]-abs(sg_F_lower_noise[i])
-                             for i in range(len(spike_D))]).sum(axis=1)
 
 spike_B_sg_B_multi_sum = np.array(
     [np.multiply(spike_B[i], sg_B[i]) for i in range(len(spike_B))]).sum(axis=1)
@@ -536,10 +521,6 @@ df2['integrated_spike_B_sg_B_sum'] = pd.Series(integrated_spike_B_sg_B_sum)
 integrated_spike_C_sg_D_sum = [sum(abs(spike_C_sg_D_sum[:i]))
                                for i in range(1, len(spike_C_sg_D_sum)+1)]
 df2['integrated_spike_C_sg_D_sum'] = pd.Series(integrated_spike_C_sg_D_sum)
-
-integrated_spike_D_sg_F_sum = [sum(abs(spike_D_sg_F_sum[:i]))
-                               for i in range(1, len(spike_D_sg_F_sum)+1)]
-df2['integrated_spike_D_sg_F_sum'] = pd.Series(integrated_spike_D_sg_F_sum)
 
 integrated_sg_C_sum = [sum(abs(sg_C_sum[:i]))
                        for i in range(1, len(sg_C_sum)+1)]
