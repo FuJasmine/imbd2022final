@@ -493,9 +493,9 @@ total_predict = model.predict(Input)
 # In[ ]:
 
 
-save_name = '111052_projectB_ans.csv'  
+save_name = '111052_projectB_ans.csv' 
 """
-load_name = '111052_projectB_ans.csv'
+load_name = '/TOPIC/projectB/projectB_template.csv'
 df3 = pd.read_csv(load_name)
 df3.loc[:, 'MaxWear'] = total_predict
 df3.to_csv(save_name, index=False)
