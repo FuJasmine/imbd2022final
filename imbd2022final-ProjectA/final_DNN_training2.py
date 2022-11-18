@@ -14,9 +14,9 @@ import time
 from train_processing import feature, corr, aggregate_previous
 from test_processing import df
 
-def rmse(y_true, y_pred):
-        return K.sqrt(K.mean(K.square(y_pred - y_true), axis=-1))
 
+def rmse(y_true, y_pred):
+    return K.sqrt(K.mean(K.square(y_pred - y_true), axis=-1))
 
 
 #threshold = 0.0
@@ -41,8 +41,8 @@ Output_transformer = MaxAbsScaler()
 Input = Input_transformer.fit_transform(Input)
 #Output = Output_transformer.fit_transform(Output)
 
-input_train, input_test, output_train, output_test = train_test_split(Input, Output, test_size=0.1, random_state=random_state)
-
+input_train, input_test, output_train, output_test = train_test_split(
+    Input, Output, test_size=0.1, random_state=random_state)
 
 
 ###########################################################################################################################
@@ -57,9 +57,8 @@ print(output_train.shape)
 print(output_test.shape)
 
 
-
 model = Sequential()
-model.add(Dense(512, activation='relu', input_dim = input_train.shape[1]))
+model.add(Dense(512, activation='relu', input_dim=input_train.shape[1]))
 model.add(BatchNormalization())
 model.add(Dropout(dropout))
 model.add(Dense(64, activation='relu'))
@@ -67,7 +66,8 @@ model.add(Dense(1))
 
 model.summary()
 
-model.compile(optimizer=tf.optimizers.Adam(learning_rate=learning_rate), loss=rmse)
+model.compile(optimizer=tf.optimizers.Adam(
+    learning_rate=learning_rate), loss=rmse)
 
 start = time.time()
 history = model.fit(input_train, output_train, validation_data=(input_train, output_train),
@@ -78,17 +78,18 @@ end = time.time()
 ###################################################################################################################
 
 def numpy_rmse(true, predict):
-        return pow(np.mean(pow(true - predict, 2)), 0.5)
+    return pow(np.mean(pow(true - predict, 2)), 0.5)
 
 ##################################################################################################################
 
 
-#fine tune
+# fine tune
 ################################################################################################################
 print('\n\n\n')
 print('Fine Tune...', end='\n\n\n')
 
-model.compile(optimizer=tf.optimizers.RMSprop(learning_rate=learning_rate/10), loss=rmse)
+model.compile(optimizer=tf.optimizers.RMSprop(
+    learning_rate=learning_rate/10), loss=rmse)
 
 start = time.time()
 
@@ -114,7 +115,7 @@ test_predict_true = output_test.numpy()
 #test_predict = Output_transformer.inverse_transform(test_predict)
 #test_predict_true = Output_transformer.inverse_transform(test_predict_true)
 
-test_predict = np.round(test_predict,0)
+test_predict = np.round(test_predict, 0)
 test_RMSE = numpy_rmse(test_predict_true, test_predict)
 print('Test:')
 print('Test RMSE:\t', test_RMSE)
@@ -140,7 +141,6 @@ print('Train predict:\t', train_predict[:6].T)
 print()
 
 ##################################################################################################
-
 
 
 total = model.predict(Input)

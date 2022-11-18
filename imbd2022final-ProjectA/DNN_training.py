@@ -15,14 +15,14 @@ import time
 from train_processing import feature, corr, aggregate_previous
 from test_processing import df
 
-def rmse(y_true, y_pred):
-        return K.sqrt(K.mean(K.square(y_pred - y_true), axis=-1))
 
+def rmse(y_true, y_pred):
+    return K.sqrt(K.mean(K.square(y_pred - y_true), axis=-1))
 
 
 #threshold = 0.0
 random_state = 43
-learning_rate = 0.003# 0.003 0.005
+learning_rate = 0.003   # 0.003 0.005
 batch_size = 40
 epochs = 500
 dropout = 0.2
@@ -52,9 +52,7 @@ Test = Input_transformer.transform(Test)
 #Output = Output_transformer.fit_transform(Output)
 
 
-
 input_train, input_test, output_train, output_test = Input, Input, Output, Output
-
 
 
 ###########################################################################################################################
@@ -70,9 +68,8 @@ print(output_train.shape)
 print(output_test.shape)
 
 
-
 model = Sequential()
-model.add(Dense(512, activation='relu', input_dim = input_train.shape[1]))
+model.add(Dense(512, activation='relu', input_dim=input_train.shape[1]))
 model.add(BatchNormalization())
 model.add(Dropout(dropout))
 model.add(Dense(64, activation='relu'))
@@ -80,7 +77,8 @@ model.add(Dense(1))
 
 model.summary()
 
-model.compile(optimizer=tf.optimizers.Adam(learning_rate=learning_rate), loss=rmse)
+model.compile(optimizer=tf.optimizers.Adam(
+    learning_rate=learning_rate), loss=rmse)
 
 start = time.time()
 history = model.fit(input_train, output_train, validation_data=(input_train, output_train),
@@ -88,14 +86,13 @@ history = model.fit(input_train, output_train, validation_data=(input_train, out
 end = time.time()
 
 
-
-
-#fine tune
+# fine tune
 ################################################################################################################
 print('\n\n\n')
 print('Fine Tune...', end='\n\n\n')
 
-model.compile(optimizer=tf.optimizers.RMSprop(learning_rate=learning_rate/10), loss=rmse)
+model.compile(optimizer=tf.optimizers.RMSprop(
+    learning_rate=learning_rate/10), loss=rmse)
 
 start = time.time()
 history = model.fit(input_train, output_train, validation_data=(input_test, output_test),
@@ -114,14 +111,12 @@ print('epochs:\t\t', epochs)
 print('dropout:\t', dropout)
 
 
-
 ###################################################################################################################
 
 def numpy_rmse(true, predict):
-        return pow(np.mean(pow(true - predict, 2)), 0.5)
+    return pow(np.mean(pow(true - predict, 2)), 0.5)
 
 ##################################################################################################################
-
 
 
 total = model.predict(Input)
@@ -145,29 +140,17 @@ answer = np.reshape(answer, (-1,))
 
 
 #final_answer = answer - aggregate_previous
-#print(final_answer)
-
+# print(final_answer)
 
 
 """
 for i in range(final_answer.shape[0]):
-if final_answer[i] < 0:
-final_answer[i] = 0
+        if final_answer[i] < 0:
+                final_answer[i] = 0
 """
-#print(final_answer)
+# print(final_answer)
 
 answer_sheet = pd.read_csv('projectA_template.csv')
 #answer_sheet['anomaly_total_number'] = pd.Series(final_answer)
 answer_sheet['anomaly_total_number'] = pd.Series(answer)
 answer_sheet.to_csv('111052_projectA_ans.csv', mode='w', index=False)
-
-
-
-
-
-
-
-
-
-
-

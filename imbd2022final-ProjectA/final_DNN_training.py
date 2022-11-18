@@ -11,9 +11,9 @@ import time
 
 from train1_processing import feature1, corr1
 
-def rmse(y_true, y_pred):
-        return K.sqrt(K.mean(K.square(y_pred - y_true), axis=-1))
 
+def rmse(y_true, y_pred):
+    return K.sqrt(K.mean(K.square(y_pred - y_true), axis=-1))
 
 
 #threshold = 0.0
@@ -39,7 +39,8 @@ print(Input.shape)
 Input = Input_transformer.fit_transform(Input)
 #Output = Output_transformer.fit_transform(Output)
 
-input_train, input_test, output_train, output_test = train_test_split(Input, Output, test_size=0.1, random_state=random_state)
+input_train, input_test, output_train, output_test = train_test_split(
+    Input, Output, test_size=0.1, random_state=random_state)
 
 
 ###########################################################################################################################
@@ -49,25 +50,23 @@ output_train = tf.convert_to_tensor(output_train)
 output_test = tf.convert_to_tensor(output_test)
 
 
+# 512 D 128 D 64 1               threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.1
+# 512 D 128 D 64 1               threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.2
+# 512 B D 128 1                  threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.2
+# 512 B D 64 1                   threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.2
+# 512 B D 64 1                   threshold=0.0, random=43, learning_rate=0.005, batch_size=40, epochs=500, dropout=0.2
+# 512 B D 64 1                   threshold=0.0, random=43, learning_rate=0.01,  batch_size=40, epochs=500, dropout=0.2
+# 512 B D 256 1                  threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.2
 
-#512 D 128 D 64 1threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.1
-#512 D 128 D 64 1threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.2
-#512 B D 128 1threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.2
-#512 B D 64 1threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.2
-#512 B D 64 1threshold=0.0, random=43, learning_rate=0.005, batch_size=40, epochs=500, dropout=0.2
-#512 B D 64 1threshold=0.0, random=43, learning_rate=0.01,  batch_size=40, epochs=500, dropout=0.2
-#512 B D 256 1threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.2
+# 512 D 128 D 64 D 4 1           threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.2
+# 512 B D 128 N D 64 1           threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.2
 
-#512 D 128 D 64 D 4 1threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.2
-#512 B D 128 N D 64 1threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.2
-
-#128 64 4 1threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.2
-#128 D 64 D 4 1threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.2
-
+# 128 64 4 1                     threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.2
+# 128 D 64 D 4 1                 threshold=0.0, random=43, learning_rate=0.003, batch_size=40, epochs=500, dropout=0.2
 
 
 model = Sequential()
-model.add(Dense(512, activation='relu', input_dim = input_train.shape[1]))
+model.add(Dense(512, activation='relu', input_dim=input_train.shape[1]))
 model.add(BatchNormalization())
 model.add(Dropout(dropout))
 model.add(Dense(64, activation='relu'))
@@ -75,7 +74,8 @@ model.add(Dense(1))
 
 model.summary()
 
-model.compile(optimizer=tf.optimizers.Adam(learning_rate=learning_rate), loss=rmse)
+model.compile(optimizer=tf.optimizers.Adam(
+    learning_rate=learning_rate), loss=rmse)
 
 start = time.time()
 history = model.fit(input_train, output_train, validation_data=(input_test, output_test),
@@ -86,17 +86,18 @@ end = time.time()
 ###################################################################################################################
 
 def numpy_rmse(true, predict):
-        return pow(np.mean(pow(true - predict, 2)), 0.5)
+    return pow(np.mean(pow(true - predict, 2)), 0.5)
 
 ##################################################################################################################
 
 
-#fine tune
+# fine tune
 ################################################################################################################
 print('\n\n\n')
 print('Fine Tune...', end='\n\n\n')
 
-model.compile(optimizer=tf.optimizers.RMSprop(learning_rate=learning_rate/10), loss=rmse)
+model.compile(optimizer=tf.optimizers.RMSprop(
+    learning_rate=learning_rate/10), loss=rmse)
 
 start = time.time()
 history = model.fit(input_train, output_train, validation_data=(input_test, output_test),

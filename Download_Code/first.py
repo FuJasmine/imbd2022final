@@ -1,6 +1,6 @@
 import os,glob
 folder_path = "D://test//data//"
-log_file = "putty.txt"
+log_file = folder_path + "putty.txt"
 new_file_name = folder_path + "new_file.txt"
 
 with open(log_file) as bigfile:
