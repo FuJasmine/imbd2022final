@@ -81,15 +81,21 @@ print('spike_dict_keys:' + str(spike.keys()))
 # In[ ]:
 
 
-# Show the size of our data
-print('\n\n')
-print('-*-*-*' * 18 + '-')
+def print_data(sg, spike):
+    # Show the size of our data
+    print('\n\n')
+    print('-*-*-*' * 18 + '-')
 
-for i in sg_feature:
-    print(i + '| \t\t', '1:', sg[i][0].size, '\t', int(layers/2)+3, ':',sg[i][int(layers/2)+2].size,  '\t', int(layers/2)+4, ':',sg[i][int(layers/2)+5].size, '\t', layers, ':', sg[i][layers-1].size,)
+    for i in sg_feature:
+        print(i + '| \t\t', '1:', sg[i][0].size, '\t', int(layers/2)+3, ':', sg[i][int(layers/2)+2].size,
+            '\t', int(layers/2)+4, ':', sg[i][int(layers/2)+5].size, '\t', layers, ':', sg[i][layers-1].size,)
 
-for i in spike_feature:
-    print(i + '| \t', '1:', spike[i][0].size, '\t', int(layers/2)+3, ':',spike[i][int(layers/2)+2].size,  '\t', int(layers/2)+4, ':',spike[i][int(layers/2)+5].size, '\t', layers, ':', spike[i][layers-1].size)
+    for i in spike_feature:
+        print(i + '| \t', '1:', spike[i][0].size, '\t', int(layers/2)+3, ':', spike[i][int(layers/2)+2].size,
+            '\t', int(layers/2)+4, ':', spike[i][int(layers/2)+5].size, '\t', layers, ':', spike[i][layers-1].size)
+
+
+print_data(sg, spike)
 
 
 # In[ ]:
@@ -125,22 +131,8 @@ for i in spike_feature:
                 spike[i][j], [[spike[i][j][-1]] * (max_num - spike[i][j].size)])
     print(str(i) + '...', end='')
     print('cost time: ', time.time() - s)
-
-
-# In[ ]:
-
-
-# Show the size of our data
-print('\n\n')
-print('-*-*-*' * 18 + '-')
-
-for i in sg_feature:
-    print(i + '| \t\t', '1:', sg[i][0].size, '\t', int(layers/2)+3, ':', sg[i][int(layers/2)+2].size,
-          '\t', int(layers/2)+4, ':', sg[i][int(layers/2)+5].size, '\t', layers, ':', sg[i][layers-1].size,)
-
-for i in spike_feature:
-    print(i + '| \t', '1:', spike[i][0].size, '\t', int(layers/2)+3, ':', spike[i][int(layers/2)+2].size,
-          '\t', int(layers/2)+4, ':', spike[i][int(layers/2)+5].size, '\t', layers, ':', spike[i][layers-1].size)
+    
+print_data(sg, spike)
 
 
 # In[ ]:
@@ -255,25 +247,18 @@ for i in spike_feature:
 # In[ ]:
 
 
-# Show the size of our data
-print('\n\n')
-print('-*-*-*' * 18 + '-')
-
-for i in sg_feature:
-    print(i + '| \t\t', '1:', sg[i][0].size, '\t', int(layers/2)+3, ':', sg[i][int(layers/2)+2].size,
-          '\t', int(layers/2)+4, ':', sg[i][int(layers/2)+5].size, '\t', layers, ':', sg[i][layers-1].size,)
-
-for i in spike_feature:
-    print(i + '| \t', '1:', spike[i][0].size, '\t', int(layers/2)+3, ':', spike[i][int(layers/2)+2].size,
-          '\t', int(layers/2)+4, ':', spike[i][int(layers/2)+5].size, '\t', layers, ':', spike[i][layers-1].size)
+print_data(sg, spike)
 
 
 # In[ ]:
 
 
 # Creaet lower noise featrue
-temp_list = list(abs(np.around(sg['sg_B'][0], decimals=4)))
-counter = collections.Counter(temp_list)
+counter = collections.Counter([])
+for i in range(0, len(sg['sg_B'])):
+    temp_list = list(abs(np.around(sg['sg_B'][i], 4)))
+    counter = counter + collections.Counter(temp_list)
+    
 print('Frequency of each value in sg_B[0]: ', counter)
 upper = counter.most_common()[0][0]
 lower = counter.most_common()[1][0]
@@ -282,8 +267,11 @@ print('B upper and lower', upper, lower)
 work_B = [[1 if abs(sg['sg_B'][i][j]) >= lower-0.0001 and abs(sg['sg_B'][i][j]) <= upper+0.0001 else 0
            for j in range(len(sg['sg_B'][i]))] for i in range(len(sg['sg_B']))]
 
-temp_list = list(abs(np.around(sg['sg_D'][0], decimals=4)))
-counter = collections.Counter(temp_list)
+
+counter = collections.Counter([])
+for i in range(0, len(sg['sg_B'])):
+    temp_list = list(abs(np.around(sg['sg_D'][i], 4)))
+    counter = counter + collections.Counter(temp_list)
 print('Frequency of each value in sg_D[0]: ', counter)
 upper = counter.most_common()[0][0]
 lower = counter.most_common()[1][0]
@@ -292,18 +280,10 @@ print('D upper and lower', upper, lower)
 work_D = [[1 if abs(sg['sg_D'][i][j]) >= lower-0.0001 and abs(sg['sg_D'][i][j]) <= upper+0.0001 else 0
            for j in range(len(sg['sg_D'][i]))] for i in range(len(sg['sg_D']))]
 
-
-# In[ ]:
-
-
 spike_abs_B_lower_noise = spike_abs['spike_B'] * work_B
 spike_B_lower_noise = spike['spike_B'] * work_B
 spike_abs_C_lower_noise = spike_abs['spike_D'] * work_D
 spike_C_lower_noise = spike['spike_D'] * work_D
-
-
-# In[ ]:
-
 
 sg_B_lower_noise = np.array(sg['sg_B']) * work_B
 sg_D_lower_noise = np.array(sg['sg_D']) * work_D

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[8]:
 
 
 import numpy as np
@@ -17,7 +17,7 @@ from keras.layers import Dense
 from keras import backend as K
 
 
-# In[ ]:
+# In[9]:
 
 
 # Loading the dataset
@@ -221,12 +221,13 @@ integrated_spike_C_sg_D2 = [sum(abs(spike_C_sg_D_sum[train1_len+1:i]))
 integrated_spike_C_sg_D = integrated_spike_C_sg_D1 + integrated_spike_C_sg_D2
 df['integrated_spike_C_sg_D'] = pd.Series(integrated_spike_C_sg_D)
 
-integrated_sg_C_sum1 = [sum(abs(sg_C_sum[:i]))
-                        for i in range(1, train1_len+1)]
-integrated_sg_C_sum2 = [sum(abs(sg_C_sum[train1_len+1:i]))
-                        for i in range(train1_len+1, len(sg_C_sum)+1)]
-integrated_sg_C_sum = integrated_sg_C_sum1 + integrated_sg_C_sum2
-df['integrated_sg_C_sum'] = pd.Series(integrated_sg_C_sum)
+# Old featrues ↓
+# integrated_sg_C_sum1 = [sum(abs(sg_C_sum[:i]))
+#                         for i in range(1, train1_len+1)]
+# integrated_sg_C_sum2 = [sum(abs(sg_C_sum[train1_len+1:i]))
+#                         for i in range(train1_len+1, len(sg_C_sum)+1)]
+# integrated_sg_C_sum = integrated_sg_C_sum1 + integrated_sg_C_sum2
+# df['integrated_sg_C_sum'] = pd.Series(integrated_sg_C_sum)
 
 
 ############################################# New features #############################################
@@ -287,7 +288,7 @@ corr = pd.DataFrame(transformer.fit_transform(df), columns=columns).corr()
 print(corr.iloc[-1, :])
 
 
-# In[ ]:
+# In[10]:
 
 
 print(df.columns)
@@ -311,7 +312,7 @@ Input = Input_transformer.fit_transform(Input)
 print('Input layer 0: ', Input[0, :10])
 
 
-# In[ ]:
+# In[11]:
 
 
 #input_train, input_test, output_train, output_test = train_test_split(
@@ -371,7 +372,7 @@ print('Training cost time:\t', end - start, 's')
 print('\n\n')
 
 
-# In[ ]:
+# In[12]:
 
 
 def numpy_rmse(actual, predict):
@@ -522,9 +523,9 @@ integrated_spike_C_sg_D_sum = [sum(abs(spike_C_sg_D_sum[:i]))
                                for i in range(1, len(spike_C_sg_D_sum)+1)]
 df2['integrated_spike_C_sg_D_sum'] = pd.Series(integrated_spike_C_sg_D_sum)
 
-integrated_sg_C_sum = [sum(abs(sg_C_sum[:i]))
-                       for i in range(1, len(sg_C_sum)+1)]
-df2['integrated_sg_C_sum'] = pd.Series(integrated_sg_C_sum)
+# integrated_sg_C_sum = [sum(abs(sg_C_sum[:i]))
+#                        for i in range(1, len(sg_C_sum)+1)]
+# df2['integrated_sg_C_sum'] = pd.Series(integrated_sg_C_sum)
 
 ############################################# New features #############################################
 #Sg_sum
