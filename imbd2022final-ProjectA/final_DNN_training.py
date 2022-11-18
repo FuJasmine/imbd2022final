@@ -10,7 +10,6 @@ import tensorflow as tf
 import time
 
 from train1_processing import feature1, corr1
-from train2_processing import feature2, corr2
 
 def rmse(y_true, y_pred):
         return K.sqrt(K.mean(K.square(y_pred - y_true), axis=-1))
@@ -24,17 +23,8 @@ batch_size = 40
 epochs = 500
 dropout = 0.2
 
-#Model1 = feature1.loc[:, corr1[abs(corr1.iloc[-1]) > threshold].index]
-#Model2 = feature2.loc[:, corr2[abs(corr2.iloc[-1]) > threshold].index]
 
-Model1 = feature1
-Model2 = feature2
-
-
-#Model = pd.concat([Model1, Model2])
-Model = Model2
-
-print(Model.columns)
+Model = feature1
 Model = Model.values
 
 Input = Model[:, :-1]

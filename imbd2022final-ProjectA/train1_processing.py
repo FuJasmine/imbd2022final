@@ -366,5 +366,3 @@ feature1 = df.iloc[:, 2:]
 
 #pd.set_option('display.max_rows', None)
 corr1 = feature1.corr()
-
-111052@c1team31-9b7c9586c-kppmn:/home/projectA/Spare$ 

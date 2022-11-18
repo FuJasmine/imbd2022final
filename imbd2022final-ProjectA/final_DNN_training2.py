@@ -1,4 +1,3 @@
-y
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, RobustScaler, MaxAbsScaler, MinMaxScaler
 from sklearn.utils import shuffle
@@ -11,9 +10,6 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 import time
-
-#from train1_processing import feature1, corr1
-#from train2_processing import feature2, corr2
 
 from train_processing import feature, corr, aggregate_previous
 from test_processing import df
@@ -30,43 +26,13 @@ batch_size = 40
 epochs = 500
 dropout = 0.2
 
-#Model1 = feature1.loc[:, corr1[abs(corr1.iloc[-1]) > threshold].index]
-#Model2 = feature2.loc[:, corr2[abs(corr2.iloc[-1]) > threshold].index]
-
-#Model1 = feature1
-#Model2 = feature2
-
-
-
-
-
-#Model = pd.concat([Model1, Model2, df])
-#Model = Model1
 Model = feature
 
-
-Model = shuffle(Model, random_state=random_state)
-
-#Test = df
-Test = Model.iloc[:, :-1]
-
-
-
 print('Model shape: ', Model.shape)
-print('Test shape: ', Test.shape)
-
-
-
-
-#print(Model.columns)
 Model = Model.values
 
 Input = Model[:, :-1]
 Output = Model[:, -1].reshape((-1, 1))
-
-
-
-
 
 Input_transformer = StandardScaler()    # Standard
 Output_transformer = MaxAbsScaler()
@@ -74,12 +40,8 @@ Output_transformer = MaxAbsScaler()
 
 Input = Input_transformer.fit_transform(Input)
 #Output = Output_transformer.fit_transform(Output)
-Test = Input_transformer.transform(Test)
 
-
-
-#input_train, input_test, output_train, output_test = train_test_split(Input, Output, test_size=0.0, random_state=random_state)
-input_train, input_test, output_train, output_test = Input, Input, Output, Output
+input_train, input_test, output_train, output_test = train_test_split(Input, Output, test_size=0.1, random_state=random_state)
 
 
 
@@ -88,7 +50,6 @@ input_train = tf.convert_to_tensor(input_train)
 input_test = tf.convert_to_tensor(input_test)
 output_train = tf.convert_to_tensor(output_train)
 output_test = tf.convert_to_tensor(output_test)
-Test = tf.convert_to_tensor(Test)
 
 print(input_train.shape)
 print(input_test.shape)
@@ -130,6 +91,7 @@ print('Fine Tune...', end='\n\n\n')
 model.compile(optimizer=tf.optimizers.RMSprop(learning_rate=learning_rate/10), loss=rmse)
 
 start = time.time()
+
 history = model.fit(input_train, output_train, validation_data=(input_test, output_test),
                     batch_size=batch_size, epochs=int(epochs/2), verbose=1)
 end = time.time()
@@ -146,36 +108,51 @@ print('epochs:\t\t', epochs)
 print('dropout:\t', dropout)
 
 
-answer = model.predict(Test)
-Output_final_tune = Output
+test_predict = model.predict(input_test)
+test_predict_true = output_test.numpy()
 
-#answer = Output_transformer.inverse_transform(answer)
-#Output_final_tune = Output_transformer.inverse_transform(Output)
+#test_predict = Output_transformer.inverse_transform(test_predict)
+#test_predict_true = Output_transformer.inverse_transform(test_predict_true)
 
-answer = np.round(answer, 0)
-total_RMSE = numpy_rmse(Output_final_tune, answer)
-print('Total: ')
-print('Total RMSE: \t', total_RMSE)
+test_predict = np.round(test_predict,0)
+test_RMSE = numpy_rmse(test_predict_true, test_predict)
+print('Test:')
+print('Test RMSE:\t', test_RMSE)
+print('Test true:\t', test_predict_true[:6].T)
+print('Test predict:\t', test_predict[:6].T)
 print()
 
 
+############################################################################################
 
-"""
+train_predict = model.predict(input_train)
+train_predict_true = output_train.numpy()
 
-final_answer = np.round(answer, 0)
-answer_sheet = pd.read_csv('answer.csv')
-answer_sheet['anomaly_total_number'] = pd.Series(final_answer)
-answer_sheet = answer_sheet.reset_index(drop=True)
-answer_sheet.to_csv('answer.csv', mode='w', index=False)
+#train_predict = Output_transformer.inverse_transform(train_predict)
+#train_predict_true = Output_transformer.inverse_transform(train_predict_true)
 
-"""
+train_predict = np.round(train_predict, 0)
+train_RMSE = numpy_rmse(train_predict_true, train_predict)
+print('Train:')
+print('Train RMSE:\t', train_RMSE)
+print('Train true:\t', train_predict_true[:6].T)
+print('Train predict:\t', train_predict[:6].T)
+print()
 
-
-
-
-
-
-
-
+##################################################################################################
 
 
+
+total = model.predict(Input)
+Output = Output
+
+#total = Output_transformer.inverse_transform(total)
+#Output = Output_transformer.inverse_transform(Output)
+
+total = np.round(total, 0)
+total_RMSE = numpy_rmse(Output, total)
+print('Total: ')
+print('Total RMSE:\t', total_RMSE)
+print('Total true:\t', total[:6].T)
+print('Total predict:\t', Output[:6].T)
+print()
