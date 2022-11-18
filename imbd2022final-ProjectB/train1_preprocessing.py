@@ -274,6 +274,7 @@ for i in spike_feature:
 # Creaet lower noise featrue
 temp_list = list(abs(np.around(sg['sg_B'][0], decimals=4)))
 counter = collections.Counter(temp_list)
+print('Frequency of each value in sg_B[0]: ', counter)
 upper = counter.most_common()[0][0]
 lower = counter.most_common()[1][0]
 print('B upper and lower', upper, lower)
@@ -283,6 +284,7 @@ work_B = [[1 if abs(sg['sg_B'][i][j]) >= lower-0.0001 and abs(sg['sg_B'][i][j]) 
 
 temp_list = list(abs(np.around(sg['sg_D'][0], decimals=4)))
 counter = collections.Counter(temp_list)
+print('Frequency of each value in sg_D[0]: ', counter)
 upper = counter.most_common()[0][0]
 lower = counter.most_common()[1][0]
 print('D upper and lower', upper, lower)
